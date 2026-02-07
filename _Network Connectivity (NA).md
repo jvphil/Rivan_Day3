@@ -2883,7 +2883,37 @@ IPv6 autoconfig
 
 
 
-
+conf t
+ access-list 1 permit 10.0.0.0 0.255.255.255
+ access-list 1 permit 172.16.0.0 0.15.255.255
+ access-list 1 permit 192.168.0.0 0.0.255.255
+ !
+ route-map NAT_ISP1 permit 10
+  match ip address 1
+  match interface e1/1
+ route-map NAT_ISP2 permit 10
+  match ip address 1
+  match interface e1/2
+ route-map NAT_ISP3 permit 10
+  match ip address 1
+  match interface e1/3
+ !
+ ip nat pool POOL7 207.7.7.10 207.7.7.254 netmask 255.255.255.0  
+ ip nat pool POOL8 208.8.8.10 208.8.8.254 netmask 255.255.255.0
+ ip nat pool POOL9 209.9.9.10 209.9.9.254 netmask 255.255.255.0
+ ip nat inside source route-map NAT_ISP1 pool POOL8 overload
+ ip nat inside source route-map NAT_ISP2 pool POOL7 overload
+ ip nat inside source route-map NAT_ISP3 pool POOL9 overload
+ end
+ 
+ 
+ 
+conf t
+ ip nat inside source static 10.1.4.6 209.9.9.10 
+ ip nat inside source static 10.1.1.2 208.8.8.10
+ ip nat inside source static 10.1.1.10 207.7.7.10
+ end
+show ip nat translations
 
 
 
