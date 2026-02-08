@@ -1248,7 +1248,7 @@ end
 ~~~
 !@D2
 config t
- router ____  ____
+ router eigrp   ____
   no auto-summary
   network __.__.__.__  __.__.__.__
   network __.__.__.__  __.__.__.__
@@ -1503,10 +1503,10 @@ conf t
 ~~~
 !@R4
 conf t
- router ___  __
-  router-id __.__.__.__
-  network __.__.__.__  __.__.__.__ area __
-  network __.__.__.__  __.__.__.__ area __
+ router ospf  1
+  router-id 4.4.4.4
+  network 10.1.1.8 0.0.0.3 area 0
+  network 4.4.4.4  0.0.0.0 area 0
   end
 ~~~
 
@@ -1820,6 +1820,7 @@ conf t
  int e1/2
   ip ospf network point-to-point
   end
+
 ~~~
 
 ~~~
@@ -1836,6 +1837,7 @@ conf t
  int e1/2
   ip ospf priority 255
   end
+
 ~~~
 
 ~~~
@@ -1844,6 +1846,7 @@ conf t
  int e1/0
   ip ospf priority 0
   end
+
 ~~~
 
 <br>
@@ -2051,9 +2054,9 @@ conf t
 
 | Legend | Routing Protocol | Administrative Distance | Metric |
 | ---    | ---              | ---                     | ---    |
-| C      | Connected        |                         |        |
-| S      | Static           |                         |        |
-| D      | EIGRP            |                         |        |
+| C      | Connected        |            0             |        |
+| S      | Static           |            1             |        |
+| D      | EIGRP            |            90             |        |
 | D EX   | External EIGRP   |                         |        |
 | O      | OSPF             |                         |        |
 | O E2   | External T5 OSPF |                         |        |
@@ -2169,6 +2172,15 @@ conf t
   end
 ~~~
 
+
+!@R2
+
+conf t
+ int lo7
+ ip add 10.10.7.1 255.255.255.255
+ ip ospf 1 area 12
+ end
+ 
 <br>
 <br>
 
@@ -2368,17 +2380,17 @@ conf t
 conf t
  router bgp __
   bgp log-neighbor-changes
-  ______  __.__.__.__ remote-as __
-  ______  __.__.__.__ remote-as __
-  ______  __.__.__.__ remote-as __
-  address-family __
-   ______  __.__.__.__ activate
-   ______  __.__.__.__ activate
-   ______  __.__.__.__ activate
-   ______  __.__.__.__ mask __.__.__.__
-   ______  __.__.__.__ mask __.__.__.__
-   ______  __.__.__.__ mask __.__.__.__
-   ______  __.__.__.__ mask __.__.__.__
+  neighbor  32.3.2.2 remote-as 2
+  neighbor 35.3.5.5  remote-as 45
+  neighbor 209.9.9.1 remote-as 1
+  address-family ipv4
+   neighbor  32.3.2.2 activate
+  neighbor 35.3.5.5 activate
+   neighbor 209.9.9.1 activate
+   network  32.3.2.0 mask 255.255.255.0
+   network 35.3.5.0 mask 255.255.255.0
+   network 209.9.9.0 mask 255.255.255.0
+   network 33.33.33.33 mask 255.255.255.255
    end
 ~~~
 
